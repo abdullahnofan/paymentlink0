@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Verification Service</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-color: #f0f8ff; /* Light blue background */
+            color: #003366; /* Dark blue text */
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 2px solid #003366; /* Dark blue border */
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+            background-color: #ffffff; /* White background */
+        }
+        h1 {
+            color: #003366; /* Dark blue */
+        }
+        .option {
+            margin: 15px 0;
+            padding: 15px;
+            border: 2px solid #003366; /* Dark blue border */
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #e6f2ff; /* Lighter blue */
+            color: #003366; /* Dark blue text */
+            font-weight: bold;
+        }
+        .option:hover {
+            background-color: #cce0ff; /* Slightly darker blue on hover */
+        }
+        .whatsapp-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            background-color: #003366; /* Dark blue */
+            color: #ffffff; /* White text */
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .whatsapp-button:hover {
+            background-color: #00509e; /* Darker blue */
+        }
+    </style>
+    <script>
+        function goToPayment(type) {
+            window.location.href = "payment.html?type=" + type;
+        }
+
+        function processPayment(method) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const type = urlParams.get('type');
+
+            let paymentLink = "";
+            if (type === "personal") {
+                paymentLink = "https://buy.stripe.com/5kAeXy8YnbH2fZK28a";
+            } else if (type === "business") {
+                paymentLink = "https://buy.stripe.com/28o02E3E35iE4h2aEH";
+            }
+
+            if (method === "CLIQ") {
+                let whatsappNumber = "+447537175422";
+                let whatsappMessage = encodeURIComponent("Hello, I want to pay for Instagram verification via CLIQ.");
+                let whatsappLink = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
+
+                let div = document.createElement("div");
+                div.innerHTML = `
+                    <p style='font-size: 18px; color: #003366;'>For CLIQ payments, please contact support via WhatsApp.</p>
+                    <button class='whatsapp-button' onclick="window.location.href='${whatsappLink}'">Chat on WhatsApp</button>
+                `;
+                document.body.appendChild(div);
+            } else {
+                window.location.href = paymentLink;
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="main-container" class="container">
+        <h1>Instagram Verification Service</h1>
+        <p>Select your account type:</p>
+        
+        <div class="option" onclick="goToPayment('personal')">
+            Personal Account<br>
+            <span>65 JOD (~$92 USD)</span>
+        </div>
+        
+        <div class="option" onclick="goToPayment('business')">
+            Business Account<br>
+            <span>90 JOD (~$127 USD)</span>
+        </div>
+    </div>
+
+    <div id="payment-container" class="container" style="display: none;">
+        <h1>Choose Your Payment Method</h1>
+        
+        <div class="option" onclick="processPayment('visa')">
+            Visa
+        </div>
+        
+        <div class="option" onclick="processPayment('applepay')">
+            Apple Pay
+        </div>
+        
+        <div class="option" onclick="processPayment('mastercard')">
+            MasterCard
+        </div>
+        
+        <div class="option" onclick="processPayment('CLIQ')">
+            CLIQ (Contact Support)
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const type = urlParams.get('type');
+
+        if (type) {
+            document.getElementById('main-container').style.display = "none";
+            document.getElementById('payment-container').style.display = "block";
+        }
+    </script>
+</body>
+</html>
